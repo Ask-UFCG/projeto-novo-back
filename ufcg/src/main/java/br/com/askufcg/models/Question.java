@@ -19,7 +19,7 @@ public class Question {
     private String title;
     private String content;
     private Integer qtdLikes;
-    private Integer qtdDeslikes;
+    private Integer qtdDislikes;
     private Date createdAt;
     private Boolean answered;
 

@@ -1,6 +1,6 @@
-package br.com.askufcg.serviceImpl.comment;
+package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dto.PostCommentDTO;
+import br.com.askufcg.dtos.PostCommentDTO;
 import br.com.askufcg.models.Comment;
 
 public interface CommentServiceImpl {

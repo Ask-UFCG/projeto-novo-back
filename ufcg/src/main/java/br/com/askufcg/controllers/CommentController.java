@@ -1,12 +1,12 @@
-package br.com.askufcg.controller;
+package br.com.askufcg.controllers;
 
-import br.com.askufcg.dto.PostCommentDTO;
+import br.com.askufcg.dtos.PostCommentDTO;
 import br.com.askufcg.models.Comment;
-import br.com.askufcg.serviceImpl.comment.CommentService;
+import br.com.askufcg.services.comment.CommentService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @CrossOrigin
 public class CommentController {
     private final CommentService commentService;

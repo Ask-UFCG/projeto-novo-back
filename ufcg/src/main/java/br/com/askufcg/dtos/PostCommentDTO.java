@@ -1,4 +1,4 @@
-package br.com.askufcg.dto;
+package br.com.askufcg.dtos;
 
 import lombok.Data;
 

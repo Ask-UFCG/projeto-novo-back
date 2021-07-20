@@ -1,15 +1,15 @@
-package br.com.askufcg.serviceImpl.comment;
+package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dto.PostCommentDTO;
+import br.com.askufcg.dtos.PostCommentDTO;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
 import br.com.askufcg.models.Question;
 import br.com.askufcg.models.User;
-import br.com.askufcg.repository.AnswerRepository;
-import br.com.askufcg.repository.CommentRepository;
-import br.com.askufcg.repository.QuestionRepository;
-import br.com.askufcg.repository.UserRepository;
+import br.com.askufcg.repositories.AnswerRepository;
+import br.com.askufcg.repositories.CommentRepository;
+import br.com.askufcg.repositories.QuestionRepository;
+import br.com.askufcg.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

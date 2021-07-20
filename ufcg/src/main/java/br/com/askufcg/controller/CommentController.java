@@ -1,9 +1,8 @@
 package br.com.askufcg.controller;
 
+import br.com.askufcg.dto.PostCommentDTO;
 import br.com.askufcg.models.Comment;
 import br.com.askufcg.serviceImpl.CommentService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +15,8 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/addComment")
-    public Comment addComment(@RequestBody Comment comment) {
-        return this.commentService.addComment(comment);
+    @PostMapping("/{userId}")
+    public Comment addComment(@RequestBody PostCommentDTO comment, @PathVariable("userId") Long userId){
+        return this.commentService.addComment(comment, userId);
     }
 }

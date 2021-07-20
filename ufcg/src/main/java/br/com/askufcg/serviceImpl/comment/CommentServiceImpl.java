@@ -1,4 +1,4 @@
-package br.com.askufcg.serviceInterface;
+package br.com.askufcg.serviceImpl.comment;
 
 import br.com.askufcg.dto.PostCommentDTO;
 import br.com.askufcg.models.Comment;

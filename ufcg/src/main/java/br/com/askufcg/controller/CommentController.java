@@ -15,8 +15,13 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/{userId}")
-    public Comment addComment(@RequestBody PostCommentDTO comment, @PathVariable("userId") Long userId){
-        return this.commentService.addComment(comment, userId);
+    @PostMapping("/answer/{userId}/{answerId}")
+    public Comment addCommentAnswer(@RequestBody PostCommentDTO comment, @PathVariable("userId") Long userId, @PathVariable("answerId") Long answerid){
+        return this.commentService.addCommentAnswer(comment, userId, answerid);
+    }
+
+    @PostMapping("/question/{userId}/{questionId}")
+    public Comment addCommentQuestion(@RequestBody PostCommentDTO comment, @PathVariable("userId") Long userId, @PathVariable("questionId") Long questionId){
+        return this.commentService.addCommentQuestion(comment, userId, questionId);
     }
 }

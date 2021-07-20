@@ -2,9 +2,13 @@ package br.com.askufcg.serviceImpl;
 
 import br.com.askufcg.dto.PostCommentDTO;
 import br.com.askufcg.exceptions.NotFoundException;
+import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
+import br.com.askufcg.models.Question;
 import br.com.askufcg.models.User;
+import br.com.askufcg.repository.AnswerRepository;
 import br.com.askufcg.repository.CommentRepository;
+import br.com.askufcg.repository.QuestionRepository;
 import br.com.askufcg.repository.UserRepository;
 import br.com.askufcg.serviceInterface.CommentServiceImpl;
 import lombok.AllArgsConstructor;
@@ -18,18 +22,61 @@ import java.util.Optional;
 public class CommentService implements CommentServiceImpl {
     private CommentRepository commentRepository;
     private UserRepository userRepository;
+    private QuestionRepository questionRepository;
+    private AnswerRepository answerRepository;
 
-    public Comment addComment(PostCommentDTO comment, Long userId) {
+    public Comment addCommentAnswer(PostCommentDTO postCommentDTO, Long userId, Long answerId) {
         Optional<User> user = userRepository.findById(userId);
-        if(!user.isPresent()){
-            throw new NotFoundException("User not found.");
+        isPresent(user, "User not found.");
+
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        isPresent(answer, "Answer not found.");
+
+        Comment commentReturn = saveComment(user, postCommentDTO);
+        saveAnswer(answer, commentReturn);
+
+        return commentReturn;
+    }
+
+    public Comment addCommentQuestion(PostCommentDTO postCommentDTO, Long userId, Long questionId) {
+        Optional<User> user = userRepository.findById(userId);
+        isPresent(user, "User not found.");
+
+
+        Optional<Question> question = questionRepository.findById(questionId);
+        isPresent(question, "Question not found.");
+
+
+        Comment commentReturn = saveComment(user, postCommentDTO);
+        saveQuestion(question, commentReturn);
+
+        return commentReturn;
+    }
+
+    private Comment saveComment(Optional<User> user, PostCommentDTO postCommentDTO){
+        Comment comment = new Comment();
+        comment.setAuthor(user.get());
+        comment.setCreatedAt(new Date());
+        comment.setContent(postCommentDTO.getContent());
+
+        return commentRepository.save(comment);
+    }
+
+    private void saveAnswer(Optional<Answer> answer, Comment comment){
+        Answer answerToBeSaved = answer.get();
+        answerToBeSaved.getComments().add(comment);
+        answerRepository.save(answerToBeSaved);
+    }
+
+    private void saveQuestion(Optional<Question> question, Comment comment){
+        Question questionToBeSaved = question.get();
+        questionToBeSaved.getComments().add(comment);
+        questionRepository.save(questionToBeSaved);
+    }
+
+    private void isPresent(Optional entity, String messsage){
+        if (!entity.isPresent()){
+            throw new NotFoundException(messsage);
         }
-
-        Comment comment1 = new Comment();
-        comment1.setAuthor(user.get());
-        comment1.setCreatedAt(new Date());
-        comment1.setContent(comment.getContent());
-
-        return commentRepository.save(comment1);
     }
 }

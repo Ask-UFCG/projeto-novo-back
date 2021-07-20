@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,6 +58,23 @@ public class CommentService implements CommentServiceImpl {
         comment.setContent(content);
 
         return commentRepository.save(comment);
+    }
+
+    public Comment exhibitCommentAnswer(Long commentId, Long answerId) {
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        isPresent(comment, "Comment not found.");
+
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        isPresent(answer, "Answer not found.");
+
+        return comment.get();
+    }
+
+    public List<Comment> exhibitAllCommentsAnswer(Long answerId) {
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        isPresent(answer, "Answer not found.");
+
+        return answer.get().getComments();
     }
 
     private void saveAnswer(Answer answer, Comment comment){

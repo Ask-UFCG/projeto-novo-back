@@ -20,10 +20,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CommentService implements CommentServiceImpl {
-    private CommentRepository commentRepository;
-    private UserRepository userRepository;
-    private QuestionRepository questionRepository;
-    private AnswerRepository answerRepository;
+    private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     public Comment addCommentAnswer(PostCommentDTO postCommentDTO, Long userId, Long answerId) {
         Optional<User> user = userRepository.findById(userId);
@@ -32,8 +32,8 @@ public class CommentService implements CommentServiceImpl {
         Optional<Answer> answer = answerRepository.findById(answerId);
         isPresent(answer, "Answer not found.");
 
-        Comment commentReturn = saveComment(user, postCommentDTO);
-        saveAnswer(answer, commentReturn);
+        Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
+        saveAnswer(answer.get(), commentReturn);
 
         return commentReturn;
     }
@@ -42,36 +42,32 @@ public class CommentService implements CommentServiceImpl {
         Optional<User> user = userRepository.findById(userId);
         isPresent(user, "User not found.");
 
-
         Optional<Question> question = questionRepository.findById(questionId);
         isPresent(question, "Question not found.");
 
-
-        Comment commentReturn = saveComment(user, postCommentDTO);
-        saveQuestion(question, commentReturn);
+        Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
+        saveQuestion(question.get(), commentReturn);
 
         return commentReturn;
     }
 
-    private Comment saveComment(Optional<User> user, PostCommentDTO postCommentDTO){
+    private Comment  saveComment(User user, String content){
         Comment comment = new Comment();
-        comment.setAuthor(user.get());
+        comment.setAuthor(user);
         comment.setCreatedAt(new Date());
-        comment.setContent(postCommentDTO.getContent());
+        comment.setContent(content);
 
         return commentRepository.save(comment);
     }
 
-    private void saveAnswer(Optional<Answer> answer, Comment comment){
-        Answer answerToBeSaved = answer.get();
-        answerToBeSaved.getComments().add(comment);
-        answerRepository.save(answerToBeSaved);
+    private void saveAnswer(Answer answer, Comment comment){
+        answer.getComments().add(comment);
+        answerRepository.save(answer);
     }
 
-    private void saveQuestion(Optional<Question> question, Comment comment){
-        Question questionToBeSaved = question.get();
-        questionToBeSaved.getComments().add(comment);
-        questionRepository.save(questionToBeSaved);
+    private void saveQuestion(Question question, Comment comment){
+        question.getComments().add(comment);
+        questionRepository.save(question);
     }
 
     private void isPresent(Optional entity, String messsage){

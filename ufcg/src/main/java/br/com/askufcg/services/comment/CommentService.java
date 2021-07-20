@@ -61,13 +61,19 @@ public class CommentService implements CommentServiceImpl {
     }
 
     public Comment exhibitCommentAnswer(Long commentId, Long answerId) {
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        isPresent(comment, "Comment not found.");
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        isPresent(commentOptional, "Comment not found.");
 
-        Optional<Answer> answer = answerRepository.findById(answerId);
-        isPresent(answer, "Answer not found.");
+        Optional<Answer> answerOptional = answerRepository.findById(answerId);
+        isPresent(answerOptional, "Answer not found.");
 
-        return comment.get();
+        Comment comment = commentOptional.get();
+        Answer answer = answerOptional.get();
+        if (!answer.getComments().contains(comment)){
+            throw new NotFoundException("Answer not found within answer.");
+        }
+
+        return comment;
     }
 
     public List<Comment> exhibitAllCommentsAnswer(Long answerId) {
@@ -75,6 +81,29 @@ public class CommentService implements CommentServiceImpl {
         isPresent(answer, "Answer not found.");
 
         return answer.get().getComments();
+    }
+
+    public Comment exhibitCommentQuestion(Long commentId, Long questionId) {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        isPresent(commentOptional, "Comment not found.");
+
+        Optional<Question> questionOptional = questionRepository.findById(questionId);
+        isPresent(questionOptional, "Question not found.");
+
+        Comment comment = commentOptional.get();
+        Question question = questionOptional.get();
+        if (!question.getComments().contains(comment)){
+            throw new NotFoundException("Comment not found within answer.");
+        }
+
+        return comment;
+    }
+
+    public List<Comment> exhibitAllCommentsQuestion(Long questionId) {
+        Optional<Question> question = questionRepository.findById(questionId);
+        isPresent(question, "Answer not found.");
+
+        return question.get().getComments();
     }
 
     private void saveAnswer(Answer answer, Comment comment){

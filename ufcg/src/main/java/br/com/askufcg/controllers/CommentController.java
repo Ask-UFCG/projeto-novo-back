@@ -35,4 +35,14 @@ public class CommentController {
     public List<Comment> exhibitAllCommentsAnswer(@PathVariable("answerId") Long answerId){
         return this.commentService.exhibitAllCommentsAnswer(answerId);
     }
+
+    @GetMapping("{commentId}/questions/{questionId}")
+    public Comment exhibitCommentQuestion(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){
+        return this.commentService.exhibitCommentQuestion(commentId, questionId);
+    }
+
+    @GetMapping("/questions/{questionId}")
+    public List<Comment> exhibitAllCommentsQuestion(@PathVariable("questionId") Long questionId){
+        return this.commentService.exhibitAllCommentsQuestion(questionId);
+    }
 }

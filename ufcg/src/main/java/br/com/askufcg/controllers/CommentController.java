@@ -1,6 +1,6 @@
 package br.com.askufcg.controllers;
 
-import br.com.askufcg.dtos.PostCommentDTO;
+import br.com.askufcg.dtos.user.PostCommentDTO;
 import br.com.askufcg.models.Comment;
 import br.com.askufcg.services.comment.CommentService;
 import org.springframework.http.HttpStatus;
@@ -64,6 +64,18 @@ public class CommentController {
     @DeleteMapping("{commentId}/questions/{questionId}")
     public ResponseEntity<Comment> deleteCommentQuestion(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){
         Comment commentResult = this.commentService.deleteCommentQuestion(commentId, questionId);
+        return new ResponseEntity<>(commentResult, HttpStatus.OK);
+    }
+
+    @PutMapping("{commentId}/questions/{questionId}")
+    public ResponseEntity<Comment> updateCommentQuestion(@RequestBody PostCommentDTO comment, @PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){
+        Comment commentResult = this.commentService.updateCommentQuestion(comment, commentId, questionId);
+        return new ResponseEntity<>(commentResult, HttpStatus.OK);
+    }
+
+    @PutMapping("{commentId}/answers/{answerId}")
+    public ResponseEntity<Comment> updateCommentAnswer(@RequestBody PostCommentDTO commentDTO, @PathVariable("commentId") Long commentId, @PathVariable("answerId") Long answerId){
+        Comment commentResult = this.commentService.updateCommentAnswer(commentDTO, commentId, answerId);
         return new ResponseEntity<>(commentResult, HttpStatus.OK);
     }
 }

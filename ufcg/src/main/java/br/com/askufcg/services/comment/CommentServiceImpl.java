@@ -1,6 +1,6 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.PostCommentDTO;
+import br.com.askufcg.dtos.user.PostCommentDTO;
 import br.com.askufcg.models.Comment;
 
 import java.util.List;
@@ -12,6 +12,7 @@ public interface CommentServiceImpl {
      List<Comment> exhibitAllCommentsAnswer(Long answerId);
      Comment exhibitCommentQuestion(Long commentId, Long questionId);
      List<Comment> exhibitAllCommentsQuestion(Long questionId);
-     public Comment deleteCommentAnswer(Long commentId, Long answerId);
-     public Comment deleteCommentQuestion(Long commentId, Long questionId);
+     Comment deleteCommentAnswer(Long commentId, Long answerId);
+     Comment deleteCommentQuestion(Long commentId, Long questionId);
+     Comment updateCommentQuestion(PostCommentDTO comment, Long commentId, Long questionId);
 }

@@ -1,6 +1,6 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.PostCommentDTO;
+import br.com.askufcg.dtos.user.PostCommentDTO;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
@@ -35,7 +35,7 @@ public class CommentService implements CommentServiceImpl {
         checkEntityNotFound(answer, "Answer not found.");
 
         Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
-        saveAnswer(answer.get(), commentReturn);
+        saveCommentInAnswer(answer.get(), commentReturn);
 
         return commentReturn;
     }
@@ -48,7 +48,7 @@ public class CommentService implements CommentServiceImpl {
         checkEntityNotFound(question, "Question not found.");
 
         Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
-        saveQuestion(question.get(), commentReturn);
+        saveCommentInQuestion(question.get(), commentReturn);
 
         return commentReturn;
     }
@@ -100,17 +100,11 @@ public class CommentService implements CommentServiceImpl {
     }
 
     public Comment deleteCommentAnswer(Long commentId, Long answerId) {
-        Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found");
+        checkCommentAndAnswer(commentId, answerId);
 
-        Optional<Answer> answerOptional = answerRepository.findById(answerId);
-        checkEntityNotFound(answerOptional, "Answer not found");
+        Comment comment = commentRepository.findById(commentId).get();
+        Answer answer = answerRepository.findById(answerId).get();
 
-        Comment comment = commentOptional.get();
-        Answer answer = answerOptional.get();
-        if (!answer.getComments().contains(comment)){
-            throw new NotFoundException("Comment not found within answer.");
-        }
         answer.getComments().remove(comment);
         answerRepository.save(answer);
         commentRepository.delete(comment);
@@ -119,20 +113,41 @@ public class CommentService implements CommentServiceImpl {
     }
 
     public Comment deleteCommentQuestion(Long commentId, Long questionId) {
-        Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found");
+        checkCommentAndQuestion(commentId, questionId);
 
-        Optional<Question> questionOptional = questionRepository.findById(questionId);
-        checkEntityNotFound(questionOptional, "Question not found");
+        Comment comment = commentRepository.findById(commentId).get();
+        Question question = questionRepository.findById(questionId).get();
 
-        Comment comment = commentOptional.get();
-        Question question = questionOptional.get();
-        if (!question.getComments().contains(comment)){
-            throw new NotFoundException("Comment not found within answer.");
-        }
         question.getComments().remove(comment);
         questionRepository.save(question);
         commentRepository.delete(comment);
+        return comment;
+    }
+
+    public Comment updateCommentQuestion(PostCommentDTO commentDTO, Long commentId, Long questionId) {
+        checkCommentAndQuestion(commentId, questionId);
+
+        Comment comment = commentRepository.findById(commentId).get();
+        Question question = questionRepository.findById(questionId).get();
+
+        comment.setContent(commentDTO.getContent());
+        comment.setCreatedAt(new Date());
+        commentRepository.save(comment);
+        questionRepository.save(question);
+        return comment;
+
+    }
+
+    public Comment updateCommentAnswer(PostCommentDTO commentDTO, Long commentId, Long answerId) {
+        checkCommentAndAnswer(commentId, answerId);
+
+        Comment comment = commentRepository.findById(commentId).get();
+        Answer answer = answerRepository.findById(answerId).get();
+
+        comment.setContent(commentDTO.getContent());
+        comment.setCreatedAt(new Date());
+        commentRepository.save(comment);
+        answerRepository.save(answer);
         return comment;
     }
 
@@ -145,13 +160,41 @@ public class CommentService implements CommentServiceImpl {
         return commentRepository.save(comment);
     }
 
-    private void saveAnswer(Answer answer, Comment comment){
+    private void saveCommentInAnswer(Answer answer, Comment comment){
         answer.getComments().add(comment);
         answerRepository.save(answer);
     }
 
-    private void saveQuestion(Question question, Comment comment){
+    private void saveCommentInQuestion(Question question, Comment comment){
         question.getComments().add(comment);
         questionRepository.save(question);
+    }
+
+    private void checkCommentAndAnswer(Long commentId, Long answerId){
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        checkEntityNotFound(commentOptional, "Comment not found");
+
+        Optional<Answer> answerOptional = answerRepository.findById(answerId);
+        checkEntityNotFound(answerOptional, "Answer not found");
+
+        Comment comment = commentOptional.get();
+        Answer answer = answerOptional.get();
+        if (!answer.getComments().contains(comment)){
+            throw new NotFoundException("Comment not found within answer.");
+        }
+    }
+
+    private void checkCommentAndQuestion(Long commentId, Long questionId){
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        checkEntityNotFound(commentOptional, "Comment not found");
+
+        Optional<Question> questionOptional = questionRepository.findById(questionId);
+        checkEntityNotFound(questionOptional, "Question not found");
+
+        Comment comment = commentOptional.get();
+        Question question = questionOptional.get();
+        if (!question.getComments().contains(comment)){
+            throw new NotFoundException("Comment not found within answer.");
+        }
     }
 }

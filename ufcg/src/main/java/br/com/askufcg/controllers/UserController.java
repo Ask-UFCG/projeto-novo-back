@@ -40,7 +40,7 @@ public class UserController {
     public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest user) {
         var userSaved = userService.saveUser(userMapper.toUser(user));
         var userResponse = userMapper.fromUserToResponse(userSaved);
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

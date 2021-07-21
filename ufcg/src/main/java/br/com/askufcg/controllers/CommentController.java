@@ -1,6 +1,6 @@
 package br.com.askufcg.controllers;
 
-import br.com.askufcg.dtos.user.PostCommentDTO;
+import br.com.askufcg.dtos.comment.PostCommentDTO;
 import br.com.askufcg.models.Comment;
 import br.com.askufcg.services.comment.CommentService;
 import org.springframework.http.HttpStatus;

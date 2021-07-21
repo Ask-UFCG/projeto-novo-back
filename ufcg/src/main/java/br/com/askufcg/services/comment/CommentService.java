@@ -1,6 +1,6 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.user.PostCommentDTO;
+import br.com.askufcg.dtos.comment.PostCommentDTO;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;

@@ -44,9 +44,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
         var user = userMapper.toUser(userRequest);
-        return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
+        var updatedUser = userService.updateUser(id, user);
+        var userResponse = userMapper.fromUserToResponse(updatedUser);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

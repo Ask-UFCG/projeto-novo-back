@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @AllArgsConstructor
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor @Getter @Setter @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity @Table(name = "tb_comment")
 public class Comment {

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @AllArgsConstructor
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor @Getter @Setter @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity @Table(name = "tb_user")
 public class User {

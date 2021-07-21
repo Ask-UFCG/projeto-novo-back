@@ -51,15 +51,6 @@ public class CommentService implements CommentServiceImpl {
         return commentReturn;
     }
 
-    private Comment  saveComment(User user, String content){
-        Comment comment = new Comment();
-        comment.setAuthor(user);
-        comment.setCreatedAt(new Date());
-        comment.setContent(content);
-
-        return commentRepository.save(comment);
-    }
-
     public Comment exhibitCommentAnswer(Long commentId, Long answerId) {
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
         isPresent(commentOptional, "Comment not found.");
@@ -104,6 +95,15 @@ public class CommentService implements CommentServiceImpl {
         isPresent(question, "Answer not found.");
 
         return question.get().getComments();
+    }
+
+    private Comment  saveComment(User user, String content){
+        Comment comment = new Comment();
+        comment.setAuthor(user);
+        comment.setCreatedAt(new Date());
+        comment.setContent(content);
+
+        return commentRepository.save(comment);
     }
 
     private void saveAnswer(Answer answer, Comment comment){

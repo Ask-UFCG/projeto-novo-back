@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor @Getter @Setter @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity @Table(name = "tb_answer")
 public class Answer {

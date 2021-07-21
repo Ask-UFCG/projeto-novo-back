@@ -12,4 +12,6 @@ public interface CommentServiceImpl {
      List<Comment> exhibitAllCommentsAnswer(Long answerId);
      Comment exhibitCommentQuestion(Long commentId, Long questionId);
      List<Comment> exhibitAllCommentsQuestion(Long questionId);
+     public Comment deleteCommentAnswer(Long commentId, Long answerId);
+     public Comment deleteCommentQuestion(Long commentId, Long questionId);
 }

@@ -22,10 +22,10 @@ import static br.com.askufcg.utils.Util.checkEntityNotFound;
 @Service
 @AllArgsConstructor
 public class CommentService implements CommentServiceImpl {
-    private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
+    private CommentRepository commentRepository;
+    private UserRepository userRepository;
+    private QuestionRepository questionRepository;
+    private AnswerRepository answerRepository;
 
     public Comment addCommentAnswer(PostCommentDTO postCommentDTO, Long userId, Long answerId) {
         Optional<User> user = userRepository.findById(userId);

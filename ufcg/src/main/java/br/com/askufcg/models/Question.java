@@ -1,6 +1,7 @@
 package br.com.askufcg.models;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class Question {
 
     @ManyToOne
     private User author;
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers;
     @OneToMany
     private List<Comment> comments;

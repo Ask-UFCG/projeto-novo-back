@@ -27,8 +27,9 @@ public class AnswerServiceImpl implements AnswerService{
         var question = optionalQuestion.get();
 
         answer.setAuthor(user);
-        answerRepository.save(answer);
+        answer.setQuestion(question);
 
+        answerRepository.save(answer);
         saveAnswerInQuestion(answer, question);
 
         return answer;

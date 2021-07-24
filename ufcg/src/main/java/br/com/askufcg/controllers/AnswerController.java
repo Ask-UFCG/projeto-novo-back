@@ -1,5 +1,8 @@
 package br.com.askufcg.controllers;
 
+import br.com.askufcg.dtos.answer.AnswerMapper;
+import br.com.askufcg.dtos.answer.AnswerRequest;
+import br.com.askufcg.dtos.answer.AnswerResponse;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.services.answer.AnswerService;
 import br.com.askufcg.services.user.UserService;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/answers")
@@ -18,32 +22,46 @@ public class AnswerController {
     private AnswerService answerService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AnswerMapper answerMapper;
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<List<Answer>> getUserAnswers(@PathVariable Long id) {
+    public ResponseEntity<List<AnswerResponse>> getUserAnswers(@PathVariable Long id) {
         var user = userService.getUserById(id);
-        return new ResponseEntity<>(answerService.getUserAnswers(user), HttpStatus.OK);
+        var answers = answerService.getUserAnswers(user);
+        var answersResponse = answers.stream()
+                                                        .map(a -> answerMapper.fromAnswer(a))
+                                                        .collect(Collectors.toList());
+        return new ResponseEntity<>(answersResponse, HttpStatus.OK);
     }
 
     @PostMapping("/users/{userId}/questions/{questionId}")
-    public ResponseEntity<Answer> saveAnswer(@RequestBody Answer answer, @PathVariable Long userId, @PathVariable Long questionId) {
+    public ResponseEntity<AnswerResponse> saveAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long userId, @PathVariable Long questionId) {
         var user = userService.getUserById(userId);
-        return new ResponseEntity<>(answerService.saveAnswer(answer, user, questionId), HttpStatus.CREATED);
+        var answer = answerMapper.toAnswer(answerRequest);
+        var savedAnswer = answerService.saveAnswer(answer, user, questionId);
+        var answerResponse = answerMapper.fromAnswer(savedAnswer);
+        return new ResponseEntity<>(answerResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{answerId}")
-    public ResponseEntity<Answer> updateAnswer(@RequestBody Answer answer, @PathVariable Long answerId) {
-        return new ResponseEntity<>(answerService.updateAnswer(answer, answerId), HttpStatus.OK);
+    public ResponseEntity<AnswerResponse> updateAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long answerId) {
+        var answer = answerMapper.toAnswer(answerRequest);
+        var updatedAnswer = answerService.updateAnswer(answer, answerId);
+        var answerResponse = answerMapper.fromAnswer(updatedAnswer);
+        return new ResponseEntity<>(answerResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{answerId}")
-    public ResponseEntity<Void> updateAnswer(@PathVariable Long answerId) {
+    public ResponseEntity<Void> deleteAnswer(@PathVariable Long answerId) {
         answerService.deleteAnswerById(answerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{answerId}")
-    public ResponseEntity<Answer> getAnswer(@PathVariable Long answerId) {
-        return new ResponseEntity<>(answerService.getAnswerById(answerId), HttpStatus.OK);
+    public ResponseEntity<AnswerResponse> getAnswer(@PathVariable Long answerId) {
+        var answer = answerService.getAnswerById(answerId);
+        var answerResponse = answerMapper.fromAnswer(answer);
+        return new ResponseEntity<>(answerResponse, HttpStatus.OK);
     }
 }

@@ -3,7 +3,6 @@ package br.com.askufcg.controllers;
 import br.com.askufcg.dtos.answer.AnswerMapper;
 import br.com.askufcg.dtos.answer.AnswerRequest;
 import br.com.askufcg.dtos.answer.AnswerResponse;
-import br.com.askufcg.models.Answer;
 import br.com.askufcg.services.answer.AnswerService;
 import br.com.askufcg.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class AnswerController {
     @PostMapping("/users/{userId}/questions/{questionId}")
     public ResponseEntity<AnswerResponse> saveAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long userId, @PathVariable Long questionId) {
         var user = userService.getUserById(userId);
-        var answer = answerMapper.toAnswer(answerRequest);
+        var answer = answerMapper.toAnswerPOST(answerRequest);
         var savedAnswer = answerService.saveAnswer(answer, user, questionId);
         var answerResponse = answerMapper.fromAnswer(savedAnswer);
         return new ResponseEntity<>(answerResponse, HttpStatus.CREATED);
@@ -46,7 +45,7 @@ public class AnswerController {
 
     @PutMapping("/{answerId}")
     public ResponseEntity<AnswerResponse> updateAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long answerId) {
-        var answer = answerMapper.toAnswer(answerRequest);
+        var answer = answerMapper.toAnswerPUT(answerRequest);
         var updatedAnswer = answerService.updateAnswer(answer, answerId);
         var answerResponse = answerMapper.fromAnswer(updatedAnswer);
         return new ResponseEntity<>(answerResponse, HttpStatus.OK);

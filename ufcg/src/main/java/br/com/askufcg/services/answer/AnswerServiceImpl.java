@@ -44,15 +44,14 @@ public class AnswerServiceImpl implements AnswerService{
     public Answer updateAnswer(Answer answer, Long answerId) {
         var answerToUpdate = getAnswerById(answerId);
 
-        var updatedAnswer = updateAllInformationsAnswer(answer, answerToUpdate);
+        var updatedAnswer = updateAllInformationAnswer(answer, answerToUpdate);
 
         answerRepository.save(updatedAnswer);
         return updatedAnswer;
     }
 
-    private Answer updateAllInformationsAnswer(Answer answer, Answer answerToUpdate) {
+    private Answer updateAllInformationAnswer(Answer answer, Answer answerToUpdate) {
         answerToUpdate.setContent(answer.getContent());
-        answerToUpdate.setComments(answer.getComments());
         answerToUpdate.setQtdLikes(answer.getQtdLikes());
         answerToUpdate.setQtdDislikes(answer.getQtdDislikes());
         answerToUpdate.setSolution(answer.getSolution());

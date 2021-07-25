@@ -13,11 +13,20 @@ public class AnswerMapper {
     @Autowired
     private UserMapper userMapper;
 
-    public Answer toAnswer(AnswerRequest answerRequest) {
+    public Answer toAnswerPOST(AnswerRequest answerRequest) {
         return Answer.builder()
                 .comments(new ArrayList<>())
                 .content(answerRequest.getContent())
                 .createdAt(new Date())
+                .qtdLikes(answerRequest.getQtdLikes())
+                .qtdDislikes(answerRequest.getQtdDislikes())
+                .solution(answerRequest.getSolution())
+                .build();
+    }
+
+    public Answer toAnswerPUT(AnswerRequest answerRequest) {
+        return Answer.builder()
+                .content(answerRequest.getContent())
                 .qtdLikes(answerRequest.getQtdLikes())
                 .qtdDislikes(answerRequest.getQtdDislikes())
                 .solution(answerRequest.getSolution())

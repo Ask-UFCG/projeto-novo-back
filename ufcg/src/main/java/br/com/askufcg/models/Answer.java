@@ -23,6 +23,9 @@ public class Answer {
 
     @ManyToOne
     private User author;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
     @OneToMany
     private List<Comment> comments;
 }

@@ -15,7 +15,6 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
     @Override
 
     public List<Question> search(String title) {
-//        questionRepository.createSimilarityExtension();
         return questionRepository.findBySimilarity(title);
     }
 }

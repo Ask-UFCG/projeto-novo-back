@@ -10,6 +10,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query(value = "select * from tb_question order by similarity(title, :title) desc limit 10", nativeQuery = true)
+    @Query(value = "select * from tb_question order by similarity(title, :title) desc", nativeQuery = true)
     List<Question> findBySimilarity(@Param("title") String title);
 }

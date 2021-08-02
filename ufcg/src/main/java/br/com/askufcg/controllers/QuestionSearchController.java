@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,10 +22,11 @@ public class QuestionSearchController {
     private QuestionMapper questionMapper;
 
     @GetMapping
-    public ResponseEntity<List<QuestionResponse>> getAll(@RequestParam String title) {
-        var questions = questionSearchService.search(title).stream()
-                                                                         .map(q -> questionMapper.fromQuestion(q))
-                                                                         .collect(Collectors.toList());
+    public ResponseEntity<List<QuestionResponse>> getAll(@RequestParam(defaultValue = "") String title,
+                                                         @RequestParam(required = false) Set<String> tags) {
+        var questions = questionSearchService.search(title, tags).stream()
+                                                                                     .map(q -> questionMapper.fromQuestion(q))
+                                                                                     .collect(Collectors.toList());
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
 }

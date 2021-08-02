@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionSearchServiceImpl implements QuestionSearchService {
@@ -13,8 +15,13 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
     private QuestionRepository questionRepository;
 
     @Override
-
-    public List<Question> search(String title) {
-        return questionRepository.findBySimilarity(title);
+    public List<Question> search(String title, Set<String> tags) {
+        var questions = questionRepository.findBySimilarity(title);
+        if(tags != null) {
+            questions = questions.stream()
+                                .filter(question -> question.getTags().stream().anyMatch(tags::contains))
+                                .collect(Collectors.toList());
+        }
+        return questions;
     }
 }

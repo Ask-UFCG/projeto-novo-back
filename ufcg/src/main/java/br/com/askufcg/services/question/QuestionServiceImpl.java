@@ -61,6 +61,6 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public List<Question> getUserQuestions(User user) {
-        return questionRepository.findQuestionByAuthor(user);
+        return questionRepository.findQuestionsByAuthor(user);
     }
 }

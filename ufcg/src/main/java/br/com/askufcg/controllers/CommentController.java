@@ -1,8 +1,14 @@
 package br.com.askufcg.controllers;
 
-import br.com.askufcg.dtos.comment.PostCommentDTO;
+import br.com.askufcg.dtos.answer.AnswerResponse;
+import br.com.askufcg.dtos.comment.CommentMapper;
+import br.com.askufcg.dtos.comment.CommentRequest;
+import br.com.askufcg.dtos.comment.CommentResponse;
+import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
+import br.com.askufcg.models.User;
 import br.com.askufcg.services.comment.CommentService;
+import br.com.askufcg.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +22,23 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CommentMapper commentMapper;
 
     @PostMapping("/answers/{answerId}/users/{userId}")
-    public ResponseEntity<Comment> addCommentAnswer(@RequestBody PostCommentDTO comment, @PathVariable Long userId, @PathVariable Long answerId){
+    public ResponseEntity<CommentResponse> addCommentAnswer(@RequestBody CommentRequest commentRequest, @PathVariable Long userId, @PathVariable Long answerId){
+        Comment comment = commentMapper.toCommentPOST(commentRequest);
         Comment commentResult = this.commentService.addCommentAnswer(comment, userId, answerId);
-        return new ResponseEntity<>(commentResult, HttpStatus.CREATED);
+        CommentResponse commentResponse = commentMapper.fromComment(commentResult);
+        return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/questions/{questionId}/users/{userId}")
-    public  ResponseEntity<Comment> addCommentQuestion(@RequestBody PostCommentDTO comment, @PathVariable Long userId, @PathVariable     Long questionId){
-        Comment commentResult = this.commentService.addCommentQuestion(comment, userId, questionId);;
-        return new ResponseEntity<>(commentResult, HttpStatus.CREATED);
+    public  ResponseEntity<CommentResponse> addCommentQuestion(@RequestBody CommentRequest commentRequest, @PathVariable Long userId, @PathVariable     Long questionId){
+        Comment comment = commentMapper.toCommentPOST(commentRequest);
+        Comment commentResult = this.commentService.addCommentQuestion(comment, userId, questionId);
+        CommentResponse commentResponse = commentMapper.fromComment(commentResult);
+        return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
     }
     @GetMapping("{commentId}/answers/{answerId}")
     public ResponseEntity<Comment> getCommentAnswer(@PathVariable Long commentId, @PathVariable Long answerId){
@@ -66,13 +78,13 @@ public class CommentController {
     }
 
     @PutMapping("{commentId}/questions/{questionId}")
-    public ResponseEntity<Comment> updateCommentQuestion(@RequestBody PostCommentDTO comment, @PathVariable Long commentId, @PathVariable   Long questionId){
+    public ResponseEntity<Comment> updateCommentQuestion(@RequestBody CommentRequest comment, @PathVariable Long commentId, @PathVariable   Long questionId){
         Comment commentResult = this.commentService.updateCommentQuestion(comment, commentId, questionId);
         return new ResponseEntity<>(commentResult, HttpStatus.OK);
     }
 
     @PutMapping("{commentId}/answers/{answerId}")
-    public ResponseEntity<Comment> updateCommentAnswer(@RequestBody PostCommentDTO commentDTO, @PathVariable Long commentId, @PathVariable Long answerId){
+    public ResponseEntity<Comment> updateCommentAnswer(@RequestBody CommentRequest commentDTO, @PathVariable Long commentId, @PathVariable Long answerId){
         Comment commentResult = this.commentService.updateCommentAnswer(commentDTO, commentId, answerId);
         return new ResponseEntity<>(commentResult, HttpStatus.OK);
     }

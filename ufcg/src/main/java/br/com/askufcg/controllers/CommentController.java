@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comments")
@@ -41,28 +42,36 @@ public class CommentController {
         return new ResponseEntity<>(commentResponse, HttpStatus.CREATED);
     }
     @GetMapping("{commentId}/answers/{answerId}")
-    public ResponseEntity<Comment> getCommentAnswer(@PathVariable Long commentId, @PathVariable Long answerId){
+    public ResponseEntity<CommentResponse> getCommentAnswer(@PathVariable Long commentId, @PathVariable Long answerId){
         Comment commentResult = this.commentService.getCommentAnswer(commentId, answerId);
-        return new ResponseEntity<>(commentResult, HttpStatus.OK);
+        CommentResponse commentResponse = commentMapper.fromComment(commentResult);
+        return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
 
     @GetMapping("/answers/{answerId}")
-    public ResponseEntity<List<Comment>> getAllCommentsAnswer(@PathVariable Long answerId){
+    public ResponseEntity<List<CommentResponse>> getAllCommentsAnswer(@PathVariable Long answerId){
         List<Comment> comments = this.commentService.getAllCommentsAnswer(answerId);
-        return new ResponseEntity<>(comments,HttpStatus.OK);
+        List<CommentResponse> commentsResponse = comments.stream()
+                .map(a -> commentMapper.fromComment(a))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(commentsResponse,HttpStatus.OK);
 
     }
 
     @GetMapping("{commentId}/questions/{questionId}")
-    public ResponseEntity<Comment> getCommentQuestion(@PathVariable Long commentId, @PathVariable   Long questionId){
+    public ResponseEntity<CommentResponse> getCommentQuestion(@PathVariable Long commentId, @PathVariable   Long questionId){
         Comment commentResult = this.commentService.getCommentQuestion(commentId, questionId);
-        return new ResponseEntity<>(commentResult, HttpStatus.OK);
+        CommentResponse commentResponse = commentMapper.fromComment(commentResult);
+        return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
 
     @GetMapping("/questions/{questionId}")
-    public ResponseEntity<List<Comment>> getAllCommentsQuestion(@PathVariable    Long questionId){
+    public ResponseEntity<List<CommentResponse>> getAllCommentsQuestion(@PathVariable    Long questionId){
         List<Comment> comments = this.commentService.getAllCommentsQuestion(questionId);
-        return new ResponseEntity<>(comments,HttpStatus.OK);
+        List<CommentResponse> commentsResponse = comments.stream()
+                .map(a -> commentMapper.fromComment(a))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(commentsResponse,HttpStatus.OK);
     }
 
     @DeleteMapping("{commentId}/answers/{answerId}")

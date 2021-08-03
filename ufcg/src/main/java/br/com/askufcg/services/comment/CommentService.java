@@ -15,6 +15,6 @@ public interface CommentService {
      List<Comment> getAllCommentsQuestion(Long questionId);
      Comment deleteCommentAnswer(Long commentId, Long answerId);
      Comment deleteCommentQuestion(Long commentId, Long questionId);
-     Comment updateCommentQuestion(CommentRequest comment, Long commentId, Long questionId);
-     Comment updateCommentAnswer(CommentRequest commentDTO, Long commentId, Long answerId);
+     Comment updateCommentQuestion(Comment comment, Long commentId, Long questionId);
+     Comment updateCommentAnswer(Comment commentDTO, Long commentId, Long answerId);
 }

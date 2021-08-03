@@ -1,6 +1,5 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.comment.CommentRequest;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
@@ -131,40 +130,29 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
-    public Comment updateCommentQuestion(CommentRequest commentDTO, Long commentId, Long questionId) {
+    public Comment updateCommentQuestion(Comment comment, Long commentId, Long questionId) {
         checkCommentAndQuestion(commentId, questionId);
 
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment originalComment = commentRepository.findById(commentId).get();
         Question question = questionRepository.findById(questionId).get();
 
-        comment.setContent(commentDTO.getContent());
-        comment.setCreatedAt(new Date());
-        commentRepository.save(comment);
+        originalComment.setContent(comment.getContent());
+        commentRepository.save(originalComment);
         questionRepository.save(question);
-        return comment;
+        return originalComment;
 
     }
 
-    public Comment updateCommentAnswer(CommentRequest commentDTO, Long commentId, Long answerId) {
+    public Comment updateCommentAnswer(Comment comment, Long commentId, Long answerId) {
         checkCommentAndAnswer(commentId, answerId);
 
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment originalComment = commentRepository.findById(commentId).get();
         Answer answer = answerRepository.findById(answerId).get();
 
-        comment.setContent(commentDTO.getContent());
-        comment.setCreatedAt(new Date());
-        commentRepository.save(comment);
+        originalComment.setContent(comment.getContent());
+        commentRepository.save(originalComment);
         answerRepository.save(answer);
-        return comment;
-    }
-
-    private Comment  saveComment(User user, String content){
-        Comment comment = new Comment();
-        comment.setAuthor(user);
-        comment.setCreatedAt(new Date());
-        comment.setContent(content);
-
-        return commentRepository.save(comment);
+        return originalComment;
     }
 
     private void saveCommentInAnswer(Answer answer, Comment comment){

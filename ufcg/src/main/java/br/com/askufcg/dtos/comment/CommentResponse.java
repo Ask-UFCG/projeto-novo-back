@@ -4,7 +4,6 @@ import br.com.askufcg.models.User;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Data

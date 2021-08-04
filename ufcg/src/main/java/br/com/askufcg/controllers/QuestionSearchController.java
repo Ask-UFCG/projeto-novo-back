@@ -23,9 +23,10 @@ public class QuestionSearchController {
 
     @GetMapping
     public ResponseEntity<List<QuestionResponse>> getAll(@RequestParam(defaultValue = "") String title,
-                                                         @RequestParam(required = false) Set<String> tags) {
-        var questions = questionSearchService.search(title, tags).stream()
-                                                                                     .map(q -> questionMapper.fromQuestion(q))
+                                                         @RequestParam(required = false) Set<String> tags,
+                                                         @RequestParam(defaultValue = "new") String filter) {
+        var questions = questionSearchService.search(title, tags, filter.toLowerCase()).stream()
+                                                                                     .map(question -> questionMapper.fromQuestion(question))
                                                                                      .collect(Collectors.toList());
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }

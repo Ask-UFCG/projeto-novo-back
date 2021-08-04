@@ -52,7 +52,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponse>> getAllCommentsAnswer(@PathVariable Long answerId){
         List<Comment> comments = this.commentService.getAllCommentsAnswer(answerId);
         List<CommentResponse> commentsResponse = comments.stream()
-                .map(a -> commentMapper.fromComment(a))
+                .map(comment -> commentMapper.fromComment(comment))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(commentsResponse,HttpStatus.OK);
 
@@ -69,7 +69,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponse>> getAllCommentsQuestion(@PathVariable    Long questionId){
         List<Comment> comments = this.commentService.getAllCommentsQuestion(questionId);
         List<CommentResponse> commentsResponse = comments.stream()
-                .map(a -> commentMapper.fromComment(a))
+                .map(comment -> commentMapper.fromComment(comment))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(commentsResponse,HttpStatus.OK);
     }

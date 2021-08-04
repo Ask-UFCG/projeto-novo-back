@@ -22,7 +22,7 @@ public class Question {
     private Integer qtdLikes;
     private Integer qtdDislikes;
     private Date createdAt;
-    private Boolean answered;
+    private boolean answered;
 
     @ElementCollection
     private Set<String> tags;

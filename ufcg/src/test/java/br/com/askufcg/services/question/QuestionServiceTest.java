@@ -107,7 +107,7 @@ class QuestionServiceTest {
         assertEquals(mockedQuestion.getAuthor(), question.getAuthor());
         assertEquals(mockedQuestion.getTitle(), question.getTitle());
         assertEquals(mockedQuestion.getComments(), question.getComments());
-        assertEquals(mockedQuestion.getAnswered(), question.getAnswered());
+        assertEquals(mockedQuestion.isAnswered(), question.isAnswered());
         assertEquals(mockedQuestion.getQtdLikes(), question.getQtdLikes());
         assertEquals(mockedQuestion.getQtdDislikes(), question.getQtdDislikes());
         assertEquals(mockedQuestion.getTags(), question.getTags());

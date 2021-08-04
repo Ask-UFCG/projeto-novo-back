@@ -52,7 +52,7 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
     }
 
     private List<Question> updateQuestionsByAnswers(List<Question> questions) {
-        return questions.stream().filter(Question::getAnswered).collect(Collectors.toList());
+        return questions.stream().filter(Question::isAnswered).collect(Collectors.toList());
     }
 
     private List<Question> updateQuestionsByRelevance(List<Question> questions) {

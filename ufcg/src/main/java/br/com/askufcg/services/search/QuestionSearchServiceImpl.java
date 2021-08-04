@@ -66,7 +66,6 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
 
     private List<Question> updateQuestionsByVote(List<Question> questions) {
         Comparator<Question> byLike = (Question q1, Question q2) -> q2.getQtdLikes() - q1.getQtdLikes();
-        questions.sort(byLike);
 
         var newQuestions = new ArrayList<>(questions);
         newQuestions.sort(byLike);

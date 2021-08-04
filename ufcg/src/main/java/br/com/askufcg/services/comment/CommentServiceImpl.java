@@ -1,6 +1,5 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.comment.PostCommentDTO;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
@@ -30,30 +29,34 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    public Comment addCommentAnswer(PostCommentDTO postCommentDTO, Long userId, Long answerId) {
+    public Comment addCommentAnswer(Comment comment, Long userId, Long answerId) {
         Optional<User> user = userRepository.findById(userId);
         checkEntityNotFound(user, "User not found.");
 
         Optional<Answer> answer = answerRepository.findById(answerId);
         checkEntityNotFound(answer, "Answer not found.");
 
-        Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
-        saveCommentInAnswer(answer.get(), commentReturn);
+        User author = user.get();
+        comment.setAuthor(author);
+        commentRepository.save(comment);
+        saveCommentInAnswer(answer.get(), comment);
 
-        return commentReturn;
+        return comment;
     }
 
-    public Comment addCommentQuestion(PostCommentDTO postCommentDTO, Long userId, Long questionId) {
+    public Comment addCommentQuestion(Comment comment, Long userId, Long questionId) {
         Optional<User> user = userRepository.findById(userId);
         checkEntityNotFound(user, "User not found.");
 
         Optional<Question> question = questionRepository.findById(questionId);
         checkEntityNotFound(question, "Question not found.");
 
-        Comment commentReturn = saveComment(user.get(), postCommentDTO.getContent());
-        saveCommentInQuestion(question.get(), commentReturn);
+        User author = user.get();
+        comment.setAuthor(author);
+        commentRepository.save(comment);
+        saveCommentInQuestion(question.get(), comment);
 
-        return commentReturn;
+        return comment;
     }
 
     public Comment getCommentAnswer(Long commentId, Long answerId) {
@@ -127,40 +130,29 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
-    public Comment updateCommentQuestion(PostCommentDTO commentDTO, Long commentId, Long questionId) {
+    public Comment updateCommentQuestion(Comment comment, Long commentId, Long questionId) {
         checkCommentAndQuestion(commentId, questionId);
 
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment originalComment = commentRepository.findById(commentId).get();
         Question question = questionRepository.findById(questionId).get();
 
-        comment.setContent(commentDTO.getContent());
-        comment.setCreatedAt(new Date());
-        commentRepository.save(comment);
+        originalComment.setContent(comment.getContent());
+        commentRepository.save(originalComment);
         questionRepository.save(question);
-        return comment;
+        return originalComment;
 
     }
 
-    public Comment updateCommentAnswer(PostCommentDTO commentDTO, Long commentId, Long answerId) {
+    public Comment updateCommentAnswer(Comment comment, Long commentId, Long answerId) {
         checkCommentAndAnswer(commentId, answerId);
 
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment originalComment = commentRepository.findById(commentId).get();
         Answer answer = answerRepository.findById(answerId).get();
 
-        comment.setContent(commentDTO.getContent());
-        comment.setCreatedAt(new Date());
-        commentRepository.save(comment);
+        originalComment.setContent(comment.getContent());
+        commentRepository.save(originalComment);
         answerRepository.save(answer);
-        return comment;
-    }
-
-    private Comment  saveComment(User user, String content){
-        Comment comment = new Comment();
-        comment.setAuthor(user);
-        comment.setCreatedAt(new Date());
-        comment.setContent(content);
-
-        return commentRepository.save(comment);
+        return originalComment;
     }
 
     private void saveCommentInAnswer(Answer answer, Comment comment){

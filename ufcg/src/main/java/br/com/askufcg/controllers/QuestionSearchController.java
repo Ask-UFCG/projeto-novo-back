@@ -22,12 +22,12 @@ public class QuestionSearchController {
     private QuestionMapper questionMapper;
 
     @GetMapping
-    public ResponseEntity<List<QuestionResponse>> getAll(@RequestParam(defaultValue = "") String title,
+    public ResponseEntity<String> getAll(@RequestParam(defaultValue = "") String title,
                                                          @RequestParam(required = false) Set<String> tags,
                                                          @RequestParam(defaultValue = "new") String filter) {
-        var questions = questionSearchService.search(title, tags, filter.toLowerCase()).stream()
-                                                                                     .map(question -> questionMapper.fromQuestion(question))
-                                                                                     .collect(Collectors.toList());
-        return new ResponseEntity<>(questions, HttpStatus.OK);
+//        var questions = questionSearchService.search(title, tags, filter.toLowerCase()).stream()
+//                                                                                     .map(question -> questionMapper.fromQuestion(question))
+//                                                                                     .collect(Collectors.toList());
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 }

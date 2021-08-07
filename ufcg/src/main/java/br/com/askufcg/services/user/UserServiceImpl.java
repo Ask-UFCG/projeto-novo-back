@@ -4,6 +4,8 @@ import br.com.askufcg.exceptions.NoContentException;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +78,12 @@ public class UserServiceImpl implements UserService{
     public void deleteUser(Long id) {
         var user = getUserById(id);
         userRepository.delete(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        checkEntityNotFound(optionalUser, "User does not exists.");
+        return optionalUser.get();
     }
 }

@@ -4,3 +4,5 @@ spring:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
     initialization-mode: always
+jwt:
+  secret: ${JWT_SECRET}

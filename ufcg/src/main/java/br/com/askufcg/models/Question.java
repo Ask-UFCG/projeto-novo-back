@@ -18,6 +18,7 @@ public class Question {
     @EqualsAndHashCode.Include
     private Long id;
     private String title;
+    @Lob
     private String content;
     private Integer qtdLikes;
     private Integer qtdDislikes;

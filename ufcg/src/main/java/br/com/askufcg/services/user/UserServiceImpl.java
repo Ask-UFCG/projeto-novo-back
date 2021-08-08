@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         checkEntityNotFound(optionalUser, "User does not exists.");
         return optionalUser.get();
     }

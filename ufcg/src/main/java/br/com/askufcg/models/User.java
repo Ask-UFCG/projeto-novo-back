@@ -1,17 +1,20 @@
 package br.com.askufcg.models;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Collection;
 
 @AllArgsConstructor
 @NoArgsConstructor @Getter @Setter @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity @Table(name = "tb_user")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
@@ -23,4 +26,34 @@ public class User {
     private String linkAvatar;
     private String linkLinkedin;
     private String linkGithub;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

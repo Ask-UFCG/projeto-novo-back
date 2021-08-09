@@ -15,6 +15,7 @@ public class Answer {
     @GeneratedValue
     @EqualsAndHashCode.Include
     private Long id;
+    @Lob
     private String content;
     private Integer qtdLikes;
     private Integer qtdDislikes;

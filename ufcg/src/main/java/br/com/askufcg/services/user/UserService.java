@@ -1,10 +1,11 @@
 package br.com.askufcg.services.user;
 
 import br.com.askufcg.models.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     public List<User> getUsers();
     public User getUserById(Long id);
     public User saveUser(User user);

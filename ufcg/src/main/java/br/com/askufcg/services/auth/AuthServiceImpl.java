@@ -2,6 +2,7 @@ package br.com.askufcg.services.auth;
 
 import br.com.askufcg.dtos.auth.LoginRequest;
 import br.com.askufcg.dtos.auth.LoginResponse;
+import br.com.askufcg.dtos.user.UserMapper;
 import br.com.askufcg.exceptions.BadRequestException;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.UserRepository;
@@ -22,6 +23,8 @@ public class AuthServiceImpl implements AuthService {
     private JwtUtils jwtUtils;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public LoginResponse auth(LoginRequest loginRequest) {
@@ -34,7 +37,8 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Invalid password.");
         }
 
+        var userResponse = userMapper.fromUserToResponse(user);
         String token = jwtUtils.generateToken(user.getEmail());
-        return new LoginResponse(token);
+        return new LoginResponse(token, userResponse);
     }
 }

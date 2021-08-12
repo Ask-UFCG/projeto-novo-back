@@ -14,7 +14,7 @@ public class Comment {
     @GeneratedValue
     @EqualsAndHashCode.Include
     private Long id;
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     private Date createdAt;
 

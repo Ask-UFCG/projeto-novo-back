@@ -39,7 +39,7 @@ public class QuestionController {
         return new ResponseEntity<>(questionsResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/users/{userId}/questions/")
+    @PostMapping("/users/{userId}/questions")
     public ResponseEntity<QuestionResponse> saveQuestion(@RequestBody QuestionRequest questionRequest, @PathVariable Long userId) {
         User user = userService.getUserById(userId);
         Question question = questionMapper.toQuestionPOST(questionRequest);

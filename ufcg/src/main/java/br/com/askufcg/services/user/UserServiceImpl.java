@@ -63,8 +63,6 @@ public class UserServiceImpl implements UserService{
 
     private User updateAllInformationsUser(User newUser, User user) {
         user.setEmail(newUser.getEmail());
-        var hash = bCryptPasswordEncoder.encode(newUser.getPassword());
-        user.setPassword(hash);
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
         user.setLinkAvatar(newUser.getLinkAvatar());

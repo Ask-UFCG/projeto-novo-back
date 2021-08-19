@@ -29,12 +29,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse auth(LoginRequest loginRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
-        checkEntityNotFound(optionalUser, "User does not exists.");
+        checkEntityNotFound(optionalUser, "O email informado não foi encontrado.");
 
         var user = optionalUser.get();
         boolean validPassword = bCryptPasswordEncoder.matches(loginRequest.getPassword(), user.getPassword());
         if (!validPassword) {
-            throw new BadRequestException("Invalid password.");
+            throw new BadRequestException("Senha inválida.");
         }
 
         var userResponse = userMapper.fromUserToResponse(user);

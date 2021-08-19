@@ -16,7 +16,11 @@ public class LoginController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return new ResponseEntity<>(authService.auth(loginRequest), HttpStatus.CREATED);
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+        try {
+            return new ResponseEntity<>(authService.auth(loginRequest), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

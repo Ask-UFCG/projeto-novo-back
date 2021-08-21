@@ -1,10 +1,13 @@
 package br.com.askufcg.dtos.question;
 
 import br.com.askufcg.dtos.user.UserResponse;
+import br.com.askufcg.models.Answer;
+import br.com.askufcg.models.Comment;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,4 +22,6 @@ public class QuestionResponse {
     private Date createdAt;
     private UserResponse author;
     private Set<String> tags;
+    private List<Answer> answers;
+    private List<Comment> comments;
 }

@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/users/**").permitAll()
                 .antMatchers("/search").permitAll()
+                .antMatchers(HttpMethod.GET,"/questions/{questionId}").permitAll()
                 .anyRequest()
                 .authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and().sessionManagement()

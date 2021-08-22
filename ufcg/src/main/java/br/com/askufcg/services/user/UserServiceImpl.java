@@ -1,11 +1,11 @@
 package br.com.askufcg.services.user;
 
+import br.com.askufcg.exceptions.Constants;
 import br.com.askufcg.exceptions.NoContentException;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
         if(users.isEmpty()) {
-            throw new NoContentException();
+            throw new NoContentException(Constants.DOES_NOT_EXISTS_USERS);
         }
         return users;
     }
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        checkEntityNotFound(optionalUser, "User not found.");
+        checkEntityNotFound(optionalUser, Constants.USER_NOT_FOUND);
 
         return optionalUser.get();
     }
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User saveUser(User user) {
         Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-        checkEntityAlreadyExists(optionalUser, "User already exists.");
+        checkEntityAlreadyExists(optionalUser, Constants.USER_ALREADY_EXISTS);
 
         var hash = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(hash);
@@ -54,14 +54,14 @@ public class UserServiceImpl implements UserService{
     public User updateUser(Long id, User newUser) {
         var user = getUserById(id);
 
-        var updatedUser = updateAllInformationsUser(newUser, user);
+        var updatedUser = updateAllInformationUser(newUser, user);
 
         userRepository.save(updatedUser);
 
         return updatedUser;
     }
 
-    private User updateAllInformationsUser(User newUser, User user) {
+    private User updateAllInformationUser(User newUser, User user) {
         user.setEmail(newUser.getEmail());
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDetails loadUserByUsername(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        checkEntityNotFound(optionalUser, "User does not exists.");
+        checkEntityNotFound(optionalUser, Constants.USER_NOT_FOUND);
         return optionalUser.get();
     }
 }

@@ -1,5 +1,6 @@
 package br.com.askufcg.services.question;
 
+import br.com.askufcg.exceptions.Constants;
 import br.com.askufcg.models.Question;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.QuestionRepository;
@@ -20,7 +21,7 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public Question getQuestionById(Long id) {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
-        checkEntityNotFound(optionalQuestion, "Question not found");
+        checkEntityNotFound(optionalQuestion, Constants.QUESTION_NOT_FOUND);
 
         return optionalQuestion.get();
     }

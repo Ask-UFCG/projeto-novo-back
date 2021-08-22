@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class CommentController {
     private CommentMapper commentMapper;
 
     @PostMapping("/answers/{answerId}/users/{userId}")
-    public ResponseEntity<CommentResponse> addCommentAnswer(@RequestBody CommentRequest commentRequest, @PathVariable Long userId, @PathVariable Long answerId){
+    public ResponseEntity<CommentResponse> addCommentAnswer(@RequestBody @Valid CommentRequest commentRequest, @PathVariable Long userId, @PathVariable Long answerId){
         Comment comment = commentMapper.toCommentPOST(commentRequest);
         Comment commentResult = this.commentService.addCommentAnswer(comment, userId, answerId);
         CommentResponse commentResponse = commentMapper.fromComment(commentResult);
@@ -35,7 +36,7 @@ public class CommentController {
     }
 
     @PostMapping("/questions/{questionId}/users/{userId}")
-    public  ResponseEntity<CommentResponse> addCommentQuestion(@RequestBody CommentRequest commentRequest, @PathVariable Long userId, @PathVariable     Long questionId){
+    public  ResponseEntity<CommentResponse> addCommentQuestion(@RequestBody @Valid CommentRequest commentRequest, @PathVariable Long userId, @PathVariable     Long questionId){
         Comment comment = commentMapper.toCommentPOST(commentRequest);
         Comment commentResult = this.commentService.addCommentQuestion(comment, userId, questionId);
         CommentResponse commentResponse = commentMapper.fromComment(commentResult);
@@ -66,7 +67,7 @@ public class CommentController {
     }
 
     @GetMapping("/questions/{questionId}")
-    public ResponseEntity<List<CommentResponse>> getAllCommentsQuestion(@PathVariable    Long questionId){
+    public ResponseEntity<List<CommentResponse>> getAllCommentsQuestion(@PathVariable Long questionId){
         List<Comment> comments = this.commentService.getAllCommentsQuestion(questionId);
         List<CommentResponse> commentsResponse = comments.stream()
                 .map(comment -> commentMapper.fromComment(comment))
@@ -87,7 +88,7 @@ public class CommentController {
     }
 
     @PutMapping("{commentId}/questions/{questionId}")
-    public ResponseEntity<CommentResponse> updateCommentQuestion(@RequestBody CommentRequest commentRequest, @PathVariable Long commentId, @PathVariable   Long questionId){
+    public ResponseEntity<CommentResponse> updateCommentQuestion(@RequestBody @Valid CommentRequest commentRequest, @PathVariable Long commentId, @PathVariable   Long questionId){
         Comment comment = this.commentMapper.toCommentPUT(commentRequest);
         Comment commentResult = this.commentService.updateCommentQuestion(comment, commentId, questionId);
         CommentResponse commentResponse = commentMapper.fromComment(commentResult);
@@ -95,7 +96,7 @@ public class CommentController {
     }
 
     @PutMapping("{commentId}/answers/{answerId}")
-    public ResponseEntity<CommentResponse> updateCommentAnswer(@RequestBody CommentRequest commentRequest, @PathVariable Long commentId, @PathVariable Long answerId){
+    public ResponseEntity<CommentResponse> updateCommentAnswer(@RequestBody @Valid CommentRequest commentRequest, @PathVariable Long commentId, @PathVariable Long answerId){
         Comment comment = this.commentMapper.toCommentPUT(commentRequest);
         Comment commentResult = this.commentService.updateCommentAnswer(comment, commentId, answerId);
         CommentResponse commentResponse = commentMapper.fromComment(commentResult);

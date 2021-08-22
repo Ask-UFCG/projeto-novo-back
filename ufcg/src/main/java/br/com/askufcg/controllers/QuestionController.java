@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,8 @@ public class QuestionController {
         return new ResponseEntity<>(questionsResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/users/{userId}/questions")
-    public ResponseEntity<QuestionResponse> saveQuestion(@RequestBody QuestionRequest questionRequest, @PathVariable Long userId) {
+    @PostMapping("/users/{userId}")
+    public ResponseEntity<QuestionResponse> saveQuestion(@RequestBody @Valid QuestionRequest questionRequest, @PathVariable Long userId) {
         User user = userService.getUserById(userId);
         Question question = questionMapper.toQuestionPOST(questionRequest);
         Question savedQuestion = questionService.saveQuestion(question, user);
@@ -49,7 +50,7 @@ public class QuestionController {
     }
 
     @PutMapping("/{questionId}")
-    public ResponseEntity<QuestionResponse> updateQuestion(@RequestBody QuestionRequest questionRequest, @PathVariable Long questionId) {
+    public ResponseEntity<QuestionResponse> updateQuestion(@RequestBody @Valid QuestionRequest questionRequest, @PathVariable Long questionId) {
         Question question = questionMapper.toQuestionPUT(questionRequest);
         Question updatedQuestion = questionService.updateQuestion(questionId, question);
         QuestionResponse questionResponse = questionMapper.fromQuestion(updatedQuestion);

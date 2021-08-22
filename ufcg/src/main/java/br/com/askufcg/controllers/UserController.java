@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,14 +38,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest user) {
+    public ResponseEntity<UserResponse> saveUser(@RequestBody @Valid UserRequest user) {
         var userSaved = userService.saveUser(userMapper.toUser(user));
         var userResponse = userMapper.fromUserToResponse(userSaved);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
         var user = userMapper.toUser(userRequest);
         var updatedUser = userService.updateUser(id, user);
         var userResponse = userMapper.fromUserToResponse(updatedUser);

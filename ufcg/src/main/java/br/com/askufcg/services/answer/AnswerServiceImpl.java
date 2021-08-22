@@ -1,10 +1,12 @@
 package br.com.askufcg.services.answer;
 
+import br.com.askufcg.exceptions.Constants;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Question;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.AnswerRepository;
 import br.com.askufcg.repositories.QuestionRepository;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class AnswerServiceImpl implements AnswerService{
     @Override
     public Answer saveAnswer(Answer answer, User user, Long questionId) {
         var optionalQuestion = questionRepository.findById(questionId);
-        checkEntityNotFound(optionalQuestion, "Question not found.");
+        checkEntityNotFound(optionalQuestion, Constants.QUESTION_NOT_FOUND);
 
         var question = optionalQuestion.get();
 
@@ -62,7 +64,7 @@ public class AnswerServiceImpl implements AnswerService{
     @Override
     public Answer getAnswerById(Long answerId) {
         var optionalAnswer = answerRepository.findById(answerId);
-        checkEntityNotFound(optionalAnswer, "Answer not found.");
+        checkEntityNotFound(optionalAnswer, Constants.ANSWER_NOT_FOUND);
 
         return optionalAnswer.get();
     }

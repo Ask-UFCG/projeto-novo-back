@@ -1,5 +1,6 @@
 package br.com.askufcg.dtos.question;
 
+import br.com.askufcg.dtos.answer.AnswerMapper;
 import br.com.askufcg.dtos.user.UserMapper;
 import br.com.askufcg.dtos.user.UserResponse;
 import br.com.askufcg.models.Question;
@@ -8,12 +9,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class QuestionMapper {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private AnswerMapper answerMapper;
 
     public Question toQuestionPOST(QuestionRequest questionRequest) {
         return Question.builder()
@@ -38,7 +42,10 @@ public class QuestionMapper {
     }
 
     public QuestionResponse fromQuestion(Question question) {
-        UserResponse author = userMapper.fromUserToResponse(question.getAuthor());
+        var author = userMapper.fromUserToResponse(question.getAuthor());
+        var answers = question.getAnswers().stream()
+                                                              .map(a -> answerMapper.fromAnswer(a))
+                                                              .collect(Collectors.toList());
 
         return QuestionResponse.builder()
                 .title(question.getTitle())
@@ -50,6 +57,7 @@ public class QuestionMapper {
                 .answered(question.isAnswered())
                 .author(author)
                 .tags(question.getTags())
+                .answers(answers)
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package br.com.askufcg.services.comment;
 
+import br.com.askufcg.exceptions.Constants;
 import br.com.askufcg.exceptions.NotFoundException;
 import br.com.askufcg.models.Answer;
 import br.com.askufcg.models.Comment;
@@ -9,6 +10,7 @@ import br.com.askufcg.repositories.AnswerRepository;
 import br.com.askufcg.repositories.CommentRepository;
 import br.com.askufcg.repositories.QuestionRepository;
 import br.com.askufcg.repositories.UserRepository;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +33,10 @@ public class CommentServiceImpl implements CommentService {
 
     public Comment addCommentAnswer(Comment comment, Long userId, Long answerId) {
         Optional<User> user = userRepository.findById(userId);
-        checkEntityNotFound(user, "User not found.");
+        checkEntityNotFound(user, Constants.USER_NOT_FOUND);
 
         Optional<Answer> answer = answerRepository.findById(answerId);
-        checkEntityNotFound(answer, "Answer not found.");
+        checkEntityNotFound(answer, Constants.ANSWER_NOT_FOUND);
 
         User author = user.get();
         comment.setAuthor(author);
@@ -46,10 +48,10 @@ public class CommentServiceImpl implements CommentService {
 
     public Comment addCommentQuestion(Comment comment, Long userId, Long questionId) {
         Optional<User> user = userRepository.findById(userId);
-        checkEntityNotFound(user, "User not found.");
+        checkEntityNotFound(user, Constants.USER_NOT_FOUND);
 
         Optional<Question> question = questionRepository.findById(questionId);
-        checkEntityNotFound(question, "Question not found.");
+        checkEntityNotFound(question, Constants.QUESTION_NOT_FOUND);
 
         User author = user.get();
         comment.setAuthor(author);
@@ -61,15 +63,15 @@ public class CommentServiceImpl implements CommentService {
 
     public Comment getCommentAnswer(Long commentId, Long answerId) {
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found.");
+        checkEntityNotFound(commentOptional, Constants.COMMENT_NOT_FOUND);
 
         Optional<Answer> answerOptional = answerRepository.findById(answerId);
-        checkEntityNotFound(answerOptional, "Answer not found.");
+        checkEntityNotFound(answerOptional, Constants.ANSWER_NOT_FOUND);
 
         Comment comment = commentOptional.get();
         Answer answer = answerOptional.get();
         if (!answer.getComments().contains(comment)){
-            throw new NotFoundException("Answer not found within answer.");
+            throw new NotFoundException(Constants.ANSWER_NOT_FOUND);
         }
 
         return comment;
@@ -77,22 +79,22 @@ public class CommentServiceImpl implements CommentService {
 
     public List<Comment> getAllCommentsAnswer(Long answerId) {
         Optional<Answer> answer = answerRepository.findById(answerId);
-        checkEntityNotFound(answer, "Answer not found.");
+        checkEntityNotFound(answer, Constants.ANSWER_NOT_FOUND);
 
         return answer.get().getComments();
     }
 
     public Comment getCommentQuestion(Long commentId, Long questionId) {
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found.");
+        checkEntityNotFound(commentOptional, Constants.COMMENT_NOT_FOUND);
 
         Optional<Question> questionOptional = questionRepository.findById(questionId);
-        checkEntityNotFound(questionOptional, "Question not found.");
+        checkEntityNotFound(questionOptional, Constants.QUESTION_NOT_FOUND);
 
         Comment comment = commentOptional.get();
         Question question = questionOptional.get();
         if (!question.getComments().contains(comment)){
-            throw new NotFoundException("Comment not found within answer.");
+            throw new NotFoundException(Constants.COMMENT_NOT_FOUND);
         }
 
         return comment;
@@ -100,7 +102,7 @@ public class CommentServiceImpl implements CommentService {
 
     public List<Comment> getAllCommentsQuestion(Long questionId) {
         Optional<Question> question = questionRepository.findById(questionId);
-        checkEntityNotFound(question, "Answer not found.");
+        checkEntityNotFound(question, Constants.ANSWER_NOT_FOUND);
 
         return question.get().getComments();
     }
@@ -167,29 +169,29 @@ public class CommentServiceImpl implements CommentService {
 
     private void checkCommentAndAnswer(Long commentId, Long answerId){
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found");
+        checkEntityNotFound(commentOptional, Constants.COMMENT_NOT_FOUND);
 
         Optional<Answer> answerOptional = answerRepository.findById(answerId);
-        checkEntityNotFound(answerOptional, "Answer not found");
+        checkEntityNotFound(answerOptional, Constants.ANSWER_NOT_FOUND);
 
         Comment comment = commentOptional.get();
         Answer answer = answerOptional.get();
         if (!answer.getComments().contains(comment)){
-            throw new NotFoundException("Comment not found within answer.");
+            throw new NotFoundException(Constants.COMMENT_NOT_FOUND);
         }
     }
 
     private void checkCommentAndQuestion(Long commentId, Long questionId){
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        checkEntityNotFound(commentOptional, "Comment not found");
+        checkEntityNotFound(commentOptional, Constants.COMMENT_NOT_FOUND);
 
         Optional<Question> questionOptional = questionRepository.findById(questionId);
-        checkEntityNotFound(questionOptional, "Question not found");
+        checkEntityNotFound(questionOptional, Constants.QUESTION_NOT_FOUND);
 
         Comment comment = commentOptional.get();
         Question question = questionOptional.get();
         if (!question.getComments().contains(comment)){
-            throw new NotFoundException("Comment not found within answer.");
+            throw new NotFoundException(Constants.COMMENT_NOT_FOUND);
         }
     }
 }

@@ -1,6 +1,7 @@
 package br.com.askufcg.dtos.question;
 
 import br.com.askufcg.dtos.answer.AnswerMapper;
+import br.com.askufcg.dtos.comment.CommentMapper;
 import br.com.askufcg.dtos.user.UserMapper;
 import br.com.askufcg.dtos.user.UserResponse;
 import br.com.askufcg.models.Question;
@@ -18,6 +19,8 @@ public class QuestionMapper {
     private UserMapper userMapper;
     @Autowired
     private AnswerMapper answerMapper;
+    @Autowired
+    private CommentMapper commentMapper;
 
     public Question toQuestionPOST(QuestionRequest questionRequest) {
         return Question.builder()
@@ -43,9 +46,14 @@ public class QuestionMapper {
 
     public QuestionResponse fromQuestion(Question question) {
         var author = userMapper.fromUserToResponse(question.getAuthor());
-        var answers = question.getAnswers().stream()
-                                                              .map(a -> answerMapper.fromAnswer(a))
-                                                              .collect(Collectors.toList());
+        var answers = question.getAnswers()
+                                                 .stream()
+                                                 .map(a -> answerMapper.fromAnswer(a))
+                                                 .collect(Collectors.toList());
+        var comments = question.getComments()
+                                                    .stream()
+                                                    .map(c -> commentMapper.fromComment(c))
+                                                    .collect(Collectors.toList());
 
         return QuestionResponse.builder()
                 .title(question.getTitle())
@@ -58,6 +66,7 @@ public class QuestionMapper {
                 .author(author)
                 .tags(question.getTags())
                 .answers(answers)
+                .comments(comments)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.askufcg.dtos.question;
 
 import br.com.askufcg.dtos.answer.AnswerResponse;
+import br.com.askufcg.dtos.comment.CommentResponse;
 import br.com.askufcg.dtos.user.UserResponse;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,5 @@ public class QuestionResponse {
     private UserResponse author;
     private Set<String> tags;
     private List<AnswerResponse> answers;
+    private List<CommentResponse> comments;
 }

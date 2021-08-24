@@ -16,6 +16,7 @@ public class CommentMapper {
     public Comment toCommentPOST(CommentRequest commentRequest){
         return Comment.builder()
                 .content(commentRequest.getContent())
+                .author(commentRequest.getAuthor())
                 .createdAt(new Date())
                 .build();
     }

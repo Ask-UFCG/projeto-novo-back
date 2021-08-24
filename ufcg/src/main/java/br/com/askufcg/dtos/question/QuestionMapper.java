@@ -3,7 +3,6 @@ package br.com.askufcg.dtos.question;
 import br.com.askufcg.dtos.answer.AnswerMapper;
 import br.com.askufcg.dtos.answer.AnswerResponse;
 import br.com.askufcg.dtos.user.UserMapper;
-import br.com.askufcg.dtos.user.UserResponse;
 import br.com.askufcg.models.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

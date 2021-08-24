@@ -39,6 +39,7 @@ public class QuestionMapper {
                 .qtdLikes(questionRequest.getQtdLikes())
                 .qtdDislikes(questionRequest.getQtdDislikes())
                 .tags(questionRequest.getTags())
+                .answered(questionRequest.getAnswered())
                 .build();
     }
 

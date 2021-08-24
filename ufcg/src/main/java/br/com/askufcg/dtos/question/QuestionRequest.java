@@ -16,4 +16,5 @@ public class QuestionRequest {
     private Integer qtdLikes;
     private Integer qtdDislikes;
     private Set<String> tags;
+    private Boolean answered;
 }

@@ -50,7 +50,7 @@ public class QuestionServiceImpl implements QuestionService{
         questionToUpdate.setQtdLikes(question.getQtdLikes());
         questionToUpdate.setQtdDislikes(question.getQtdDislikes());
         questionToUpdate.setTags(question.getTags());
-
+        questionToUpdate.setAnswered(question.isAnswered());
         return questionToUpdate;
     }
 

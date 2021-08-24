@@ -1,8 +1,6 @@
 package br.com.askufcg.services.comment;
 
-import br.com.askufcg.dtos.comment.CommentRequest;
 import br.com.askufcg.models.Comment;
-import br.com.askufcg.models.User;
 
 import java.util.List;
 

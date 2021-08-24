@@ -4,6 +4,7 @@ import br.com.askufcg.dtos.auth.LoginRequest;
 import br.com.askufcg.dtos.auth.LoginResponse;
 import br.com.askufcg.dtos.user.UserMapper;
 import br.com.askufcg.exceptions.BadRequestException;
+import br.com.askufcg.exceptions.Constants;
 import br.com.askufcg.models.User;
 import br.com.askufcg.repositories.UserRepository;
 import br.com.askufcg.utils.JwtUtils;
@@ -29,12 +30,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse auth(LoginRequest loginRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
-        checkEntityNotFound(optionalUser, "O email informado não foi encontrado.");
+        checkEntityNotFound(optionalUser, Constants.EMAIL_NOT_FOUND);
 
         var user = optionalUser.get();
         boolean validPassword = bCryptPasswordEncoder.matches(loginRequest.getPassword(), user.getPassword());
         if (!validPassword) {
-            throw new BadRequestException("Senha inválida.");
+            throw new BadRequestException(Constants.INVALID_PASSWORD);
         }
 
         var userResponse = userMapper.fromUserToResponse(user);

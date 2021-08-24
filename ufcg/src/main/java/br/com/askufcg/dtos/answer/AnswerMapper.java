@@ -40,6 +40,7 @@ public class AnswerMapper {
                 .content(answer.getContent())
                 .createdAt(answer.getCreatedAt())
                 .id(answer.getId())
+                .comments(answer.getComments())
                 .qtdDislikes(answer.getQtdDislikes())
                 .qtdLikes(answer.getQtdLikes())
                 .solution(answer.getSolution())

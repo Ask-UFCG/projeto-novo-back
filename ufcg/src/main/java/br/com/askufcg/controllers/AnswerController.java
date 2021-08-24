@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class AnswerController {
     }
 
     @PostMapping("/users/{userId}/questions/{questionId}")
-    public ResponseEntity<AnswerResponse> saveAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long userId, @PathVariable Long questionId) {
+    public ResponseEntity<AnswerResponse> saveAnswer(@RequestBody @Valid AnswerRequest answerRequest, @PathVariable Long userId, @PathVariable Long questionId) {
         var user = userService.getUserById(userId);
         var answer = answerMapper.toAnswerPOST(answerRequest);
         var savedAnswer = answerService.saveAnswer(answer, user, questionId);
@@ -44,7 +45,7 @@ public class AnswerController {
     }
 
     @PutMapping("/{answerId}")
-    public ResponseEntity<AnswerResponse> updateAnswer(@RequestBody AnswerRequest answerRequest, @PathVariable Long answerId) {
+    public ResponseEntity<AnswerResponse> updateAnswer(@RequestBody @Valid AnswerRequest answerRequest, @PathVariable Long answerId) {
         var answer = answerMapper.toAnswerPUT(answerRequest);
         var updatedAnswer = answerService.updateAnswer(answer, answerId);
         var answerResponse = answerMapper.fromAnswer(updatedAnswer);

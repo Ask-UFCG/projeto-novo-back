@@ -117,10 +117,10 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question removeLikeQuestion(Question question, Long userId) {
-        var usersDislike = question.getUsersLike();
-        usersDislike.remove(userId);
+        var usersLike = question.getUsersLike();
+        usersLike.remove(userId);
 
-        question.setQtdDislikes(usersDislike.size());
+        question.setQtdLikes(usersLike.size());
 
         questionRepository.save(question);
         return question;

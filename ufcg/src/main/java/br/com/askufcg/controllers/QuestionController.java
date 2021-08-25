@@ -50,7 +50,7 @@ public class QuestionController {
         return new ResponseEntity<>(questionResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{questionId}/users/{userId}/like")
+    @GetMapping("/{questionId}/users/{userId}/like")
     public ResponseEntity<QuestionResponse> likeQuestion(@PathVariable Long questionId, @PathVariable Long userId) {
         User __ = userService.getUserById(userId);
         Question question = questionService.getQuestionById(questionId);
@@ -59,7 +59,7 @@ public class QuestionController {
         return new ResponseEntity<>(questionResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{questionId}/users/{userId}/dislike")
+    @GetMapping("/{questionId}/users/{userId}/dislike")
     public ResponseEntity<QuestionResponse> dislikeQuestion(@PathVariable Long questionId, @PathVariable Long userId) {
         User __ = userService.getUserById(userId);
         Question question = questionService.getQuestionById(questionId);

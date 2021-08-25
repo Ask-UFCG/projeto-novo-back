@@ -17,6 +17,16 @@ public class UserMapper {
                 .build();
     }
 
+    public User fromUserRequestPUTToUser(UserRequestPUT userRequestPUT) {
+        return User.builder()
+                .firstName(userRequestPUT.getFirstName())
+                .lastName(userRequestPUT.getLastName())
+                .linkAvatar(userRequestPUT.getLinkAvatar())
+                .linkGithub(userRequestPUT.getLinkGithub())
+                .linkLinkedin(userRequestPUT.getLinkLinkedin())
+                .build();
+    }
+
     public User toUser(UserRequest userRequest) {
         return User.builder()
                 .email(userRequest.getEmail())

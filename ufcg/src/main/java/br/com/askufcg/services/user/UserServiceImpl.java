@@ -62,12 +62,21 @@ public class UserServiceImpl implements UserService{
     }
 
     private User updateAllInformationUser(User newUser, User user) {
-        user.setEmail(newUser.getEmail());
-        user.setFirstName(newUser.getFirstName());
-        user.setLastName(newUser.getLastName());
-        user.setLinkAvatar(newUser.getLinkAvatar());
-        user.setLinkGithub(newUser.getLinkGithub());
-        user.setLinkLinkedin(newUser.getLinkLinkedin());
+        if(newUser.getFirstName() != null) {
+            user.setFirstName(newUser.getFirstName());
+        }
+        if(newUser.getLastName() != null) {
+            user.setLastName(newUser.getLastName());
+        }
+        if(newUser.getLinkAvatar() != null) {
+            user.setLinkAvatar(newUser.getLinkAvatar());
+        }
+        if(newUser.getLinkGithub() != null) {
+            user.setLinkGithub(newUser.getLinkGithub());
+        }
+        if(newUser.getLinkLinkedin() != null) {
+            user.setLinkLinkedin(newUser.getLinkLinkedin());
+        }
 
         return user;
     }

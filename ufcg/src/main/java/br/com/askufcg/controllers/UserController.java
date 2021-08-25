@@ -1,6 +1,7 @@
 package br.com.askufcg.controllers;
 
 import br.com.askufcg.dtos.user.UserRequest;
+import br.com.askufcg.dtos.user.UserRequestPUT;
 import br.com.askufcg.dtos.user.UserResponse;
 import br.com.askufcg.dtos.user.UserMapper;
 import br.com.askufcg.models.User;
@@ -45,8 +46,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
-        var user = userMapper.toUser(userRequest);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequestPUT userRequest) {
+        var user = userMapper.fromUserRequestPUTToUser(userRequest);
         var updatedUser = userService.updateUser(id, user);
         var userResponse = userMapper.fromUserToResponse(updatedUser);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

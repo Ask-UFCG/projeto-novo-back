@@ -123,8 +123,6 @@ public class UserServiceTest {
 
         var userUpdated = userService.updateUser(1L, mockedUser2);
 
-        assertEquals(mockedUser2.getEmail(), userUpdated.getEmail());
-        assertEquals(mockedUser2.getPassword(), userUpdated.getPassword());
         assertEquals(mockedUser2.getFirstName(), userUpdated.getFirstName());
         assertEquals(mockedUser2.getLastName(), userUpdated.getLastName());
         assertEquals(mockedUser2.getLinkAvatar(), userUpdated.getLinkAvatar());

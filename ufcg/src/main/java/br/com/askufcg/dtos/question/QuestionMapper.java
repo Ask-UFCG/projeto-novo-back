@@ -26,20 +26,17 @@ public class QuestionMapper {
                 .title(questionRequest.getTitle())
                 .content(questionRequest.getContent())
                 .createdAt(new Date())
-                .qtdLikes(questionRequest.getQtdLikes())
-                .qtdDislikes(questionRequest.getQtdDislikes())
                 .tags(questionRequest.getTags())
                 .answered(false)
                 .build();
     }
-    public Question toQuestionPUT(QuestionRequest questionRequest) {
+
+    public Question toQuestionPUT(QuestionRequestPUT questionRequestPUT) {
         return Question.builder()
-                .title(questionRequest.getTitle())
-                .content(questionRequest.getContent())
-                .qtdLikes(questionRequest.getQtdLikes())
-                .qtdDislikes(questionRequest.getQtdDislikes())
-                .tags(questionRequest.getTags())
-                .answered(questionRequest.getAnswered())
+                .title(questionRequestPUT.getTitle())
+                .content(questionRequestPUT.getContent())
+                .tags(questionRequestPUT.getTags())
+                .answered(questionRequestPUT.getAnswered())
                 .build();
     }
 
@@ -60,6 +57,8 @@ public class QuestionMapper {
                 .qtdLikes(question.getQtdLikes())
                 .answered(question.isAnswered())
                 .author(author)
+                .usersLike(question.getUsersLike())
+                .usersDislike(question.getUsersDislike())
                 .tags(question.getTags())
                 .answers(answers)
                 .build();

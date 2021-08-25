@@ -17,7 +17,7 @@ public class UserMapper {
                 .build();
     }
 
-    public User fromUserRequestPUTToUser(UserRequestPUT userRequestPUT) {
+    public User toUserPUT(UserRequestPUT userRequestPUT) {
         return User.builder()
                 .firstName(userRequestPUT.getFirstName())
                 .lastName(userRequestPUT.getLastName())

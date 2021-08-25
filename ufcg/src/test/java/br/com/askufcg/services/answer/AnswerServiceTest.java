@@ -48,7 +48,7 @@ class AnswerServiceTest {
 
         var comments = Collections.singletonList(new Comment());
 
-        this.mockedQuestion = new Question(1L, "title", "content", 20, 10, new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
+        this.mockedQuestion = new Question(1L, "title", "content", 20, 10, new HashSet<>(), new HashSet<>(), new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
 
         this.mockedAnswer = new Answer(1L, "content", 10, 5, new Date(), false, this.mockedAuthor, mockedQuestion, comments);
         this.mockedAnswer2 = new Answer(2L, "content2", 20, 10, new Date(), false, this.mockedAuthor, mockedQuestion, comments);

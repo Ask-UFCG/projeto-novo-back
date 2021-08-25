@@ -18,6 +18,8 @@ public class QuestionResponse {
     private Integer qtdLikes;
     private Integer qtdDislikes;
     private Boolean answered;
+    private Set<Long> usersLike;
+    private Set<Long> usersDislike;
     private Date createdAt;
     private UserResponse author;
     private Set<String> tags;

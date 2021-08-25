@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static br.com.askufcg.utils.Util.checkEntityNotFound;
 
@@ -45,11 +46,15 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     private Question updateAllInformationQuestion(Question question, Question questionToUpdate) {
-        questionToUpdate.setTitle(question.getTitle());
-        questionToUpdate.setContent(question.getContent());
-        questionToUpdate.setQtdLikes(question.getQtdLikes());
-        questionToUpdate.setQtdDislikes(question.getQtdDislikes());
-        questionToUpdate.setTags(question.getTags());
+        if(question.getTitle() != null) {
+            questionToUpdate.setTitle(question.getTitle());
+        }
+        if(question.getContent() != null) {
+            questionToUpdate.setContent(question.getContent());
+        }
+        if(question.getTags() != null) {
+            questionToUpdate.setTags(question.getTags());
+        }
         questionToUpdate.setAnswered(question.isAnswered());
         return questionToUpdate;
     }
@@ -63,5 +68,61 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public List<Question> getUserQuestions(User user) {
         return questionRepository.findQuestionsByAuthor(user);
+    }
+
+    @Override
+    public Question likeQuestion(Question question, Long userId) {
+        var usersDislike = question.getUsersDislike();
+        if(usersDislike.contains(userId)) {
+            usersDislike.remove(userId);
+        }
+
+        var usersLike = question.getUsersLike();
+        usersLike.add(userId);
+
+        updateVotes(question, usersDislike, usersLike);
+        return question;
+    }
+
+    private void updateVotes(Question question, Set<Long> usersDislike, Set<Long> usersLike) {
+        question.setQtdLikes(usersLike.size());
+        question.setQtdDislikes(usersDislike.size());
+        questionRepository.save(question);
+    }
+
+    @Override
+    public Question dislikeQuestion(Question question, Long userId) {
+        var usersLike = question.getUsersLike();
+        if(usersLike.contains(userId)) {
+            usersLike.remove(userId);
+        }
+
+        var usersDislike = question.getUsersDislike();
+        usersDislike.add(userId);
+
+        updateVotes(question, usersDislike, usersLike);
+        return question;
+    }
+
+    @Override
+    public Question removeDislikeQuestion(Question question, Long userId) {
+        var usersDislike = question.getUsersDislike();
+        usersDislike.remove(userId);
+
+        question.setQtdDislikes(usersDislike.size());
+
+        questionRepository.save(question);
+        return question;
+    }
+
+    @Override
+    public Question removeLikeQuestion(Question question, Long userId) {
+        var usersDislike = question.getUsersLike();
+        usersDislike.remove(userId);
+
+        question.setQtdDislikes(usersDislike.size());
+
+        questionRepository.save(question);
+        return question;
     }
 }

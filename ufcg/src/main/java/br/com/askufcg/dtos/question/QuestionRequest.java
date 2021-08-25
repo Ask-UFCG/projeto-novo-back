@@ -1,7 +1,6 @@
 package br.com.askufcg.dtos.question;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
@@ -13,8 +12,6 @@ public class QuestionRequest {
     private String title;
     @NotEmpty(message = "A questão não pode ser vazia.")
     private String content;
-    private Integer qtdLikes;
-    private Integer qtdDislikes;
     private Set<String> tags;
     private Boolean answered;
 }

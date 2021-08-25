@@ -2,6 +2,7 @@ package br.com.askufcg.controllers;
 
 import br.com.askufcg.dtos.question.QuestionMapper;
 import br.com.askufcg.dtos.question.QuestionRequest;
+import br.com.askufcg.dtos.question.QuestionRequestPUT;
 import br.com.askufcg.dtos.question.QuestionResponse;
 import br.com.askufcg.models.Question;
 import br.com.askufcg.models.User;
@@ -49,8 +50,44 @@ public class QuestionController {
         return new ResponseEntity<>(questionResponse, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{questionId}/users/{userId}/like")
+    public ResponseEntity<QuestionResponse> likeQuestion(@PathVariable Long questionId, @PathVariable Long userId) {
+        User __ = userService.getUserById(userId);
+        Question question = questionService.getQuestionById(questionId);
+        Question questionLiked = questionService.likeQuestion(question, userId);
+        QuestionResponse questionResponse = questionMapper.fromQuestion(questionLiked);
+        return new ResponseEntity<>(questionResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/{questionId}/users/{userId}/dislike")
+    public ResponseEntity<QuestionResponse> dislikeQuestion(@PathVariable Long questionId, @PathVariable Long userId) {
+        User __ = userService.getUserById(userId);
+        Question question = questionService.getQuestionById(questionId);
+        Question questionDisliked = questionService.dislikeQuestion(question, userId);
+        QuestionResponse questionResponse = questionMapper.fromQuestion(questionDisliked);
+        return new ResponseEntity<>(questionResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{questionId}/users/{userId}/like")
+    public ResponseEntity<QuestionResponse> removeLike(@PathVariable Long questionId, @PathVariable Long userId) {
+        User __ = userService.getUserById(userId);
+        Question question = questionService.getQuestionById(questionId);
+        Question questionUpdated = questionService.removeLikeQuestion(question, userId);
+        QuestionResponse questionResponse = questionMapper.fromQuestion(questionUpdated);
+        return new ResponseEntity<>(questionResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{questionId}/users/{userId}/dislike")
+    public ResponseEntity<QuestionResponse> removeDislike(@PathVariable Long questionId, @PathVariable Long userId) {
+        User __ = userService.getUserById(userId);
+        Question question = questionService.getQuestionById(questionId);
+        Question questionUpdated = questionService.removeDislikeQuestion(question, userId);
+        QuestionResponse questionResponse = questionMapper.fromQuestion(questionUpdated);
+        return new ResponseEntity<>(questionResponse, HttpStatus.OK);
+    }
+
     @PutMapping("/{questionId}")
-    public ResponseEntity<QuestionResponse> updateQuestion(@RequestBody @Valid QuestionRequest questionRequest, @PathVariable Long questionId) {
+    public ResponseEntity<QuestionResponse> updateQuestion(@RequestBody @Valid QuestionRequestPUT questionRequest, @PathVariable Long questionId) {
         Question question = questionMapper.toQuestionPUT(questionRequest);
         Question updatedQuestion = questionService.updateQuestion(questionId, question);
         QuestionResponse questionResponse = questionMapper.fromQuestion(updatedQuestion);

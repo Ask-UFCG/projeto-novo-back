@@ -11,4 +11,9 @@ public interface QuestionService {
     public Question updateQuestion(Long id, Question newQuestion);
     public void deleteQuestionById(Long id);
     public List<Question> getUserQuestions(User user);
+
+    public Question likeQuestion(Question question, Long userId);
+    public Question dislikeQuestion(Question question, Long userId);
+    public Question removeDislikeQuestion(Question question, Long userId);
+    public Question removeLikeQuestion(Question question, Long userId);
 }

@@ -48,8 +48,8 @@ class QuestionServiceTest {
 
         var comments = Collections.singletonList(new Comment());
 
-        this.mockedQuestion = new Question(1L, "title", "content", 20, 10, new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
-        this.mockedQuestion2 = new Question(2L, "title", "content", 20, 10, new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
+        this.mockedQuestion = new Question(1L, "title", "content", 20, 10, new HashSet<>(), new HashSet<>(), new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
+        this.mockedQuestion2 = new Question(2L, "title", "content", 20, 10, new HashSet<>(), new HashSet<>(), new Date(), true, new HashSet<>(), mockedAuthor, new ArrayList<>(), new ArrayList<>());
 
         this.mockedQuestions.add(mockedQuestion);
     }

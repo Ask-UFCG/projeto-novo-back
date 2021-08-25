@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +21,14 @@ public class Question {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private Integer qtdLikes;
-    private Integer qtdDislikes;
+    private int qtdLikes;
+    private int qtdDislikes;
+
+    @ElementCollection
+    private Set<Long> usersLike;
+    @ElementCollection
+    private Set<Long> usersDislike;
+
     private Date createdAt;
     private boolean answered;
 

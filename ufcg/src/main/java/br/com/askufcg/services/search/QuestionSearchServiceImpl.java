@@ -22,29 +22,30 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
     @Override
     public List<Question> search(String title, Set<String> tags, String filter) {
         var questions = questionRepository.findBySimilarity(title);
-        if(tags != null) {
+        if (tags != null) {
             questions = questions.stream()
-                                .filter(question -> question.getTags().stream().anyMatch(tags::contains))
-                                .collect(Collectors.toList());
+                    .filter(question -> question.getTags().stream().anyMatch(tags::contains))
+                    .collect(Collectors.toList());
         }
 
-        Collections.reverse(questions);
         if(!NEW.equals(filter)) {
             questions = updateQuestionsByFilter(questions, filter);
+        }else if(title == null || "".equals(title) ){
+            Collections.reverse(questions);
         }
         return questions;
     }
 
     private List<Question> updateQuestionsByFilter(List<Question> questions, String filter) {
         var validFilters = Set.of(VOTE, RELEVANT, ANSWERED);
-        if(!validFilters.contains(filter)) {
+        if (!validFilters.contains(filter)) {
             throw new BadRequestException("Invalid filter.");
         }
 
         List<Question> newQuestions = null;
-        if(VOTE.equals(filter)) newQuestions = updateQuestionsByVote(questions);
-        if(RELEVANT.equals(filter)) newQuestions = updateQuestionsByRelevance(questions);
-        if(ANSWERED.equals(filter)) newQuestions = updateQuestionsByAnswers(questions);
+        if (VOTE.equals(filter)) newQuestions = updateQuestionsByVote(questions);
+        if (RELEVANT.equals(filter)) newQuestions = updateQuestionsByRelevance(questions);
+        if (ANSWERED.equals(filter)) newQuestions = updateQuestionsByAnswers(questions);
 
         return newQuestions;
     }

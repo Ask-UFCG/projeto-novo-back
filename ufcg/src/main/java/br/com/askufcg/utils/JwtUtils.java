@@ -17,7 +17,7 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
 
-    private static final Date TWO_HOURS = new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 2);
+    private static final Date TEN_HOURS = new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 10);
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -48,7 +48,7 @@ public class JwtUtils {
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(TWO_HOURS)
+                .setExpiration(TEN_HOURS)
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 

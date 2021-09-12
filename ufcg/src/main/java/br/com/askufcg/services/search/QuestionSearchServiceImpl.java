@@ -28,16 +28,13 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
                     .collect(Collectors.toList());
         }
 
-        if(!NEW.equals(filter)) {
-            questions = updateQuestionsByFilter(questions, filter);
-        }else {
-            Collections.reverse(questions);
-        }
+        questions = updateQuestionsByFilter(questions, filter);
+
         return questions;
     }
 
     private List<Question> updateQuestionsByFilter(List<Question> questions, String filter) {
-        var validFilters = Set.of(VOTE, RELEVANT, ANSWERED);
+        var validFilters = Set.of(VOTE, RELEVANT, ANSWERED, NEW);
         if (!validFilters.contains(filter)) {
             throw new BadRequestException("Invalid filter.");
         }
@@ -46,6 +43,18 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
         if (VOTE.equals(filter)) newQuestions = updateQuestionsByVote(questions);
         if (RELEVANT.equals(filter)) newQuestions = updateQuestionsByRelevance(questions);
         if (ANSWERED.equals(filter)) newQuestions = updateQuestionsByAnswers(questions);
+        if (NEW.equals(filter)) newQuestions = updateQuestionsByDate(questions);
+
+        return newQuestions;
+    }
+
+    private List<Question> updateQuestionsByDate(List<Question> questions) {
+        Comparator<Question> byDate = (Question q1, Question q2) -> {
+            return q2.getCreatedAt().compareTo(q1.getCreatedAt());
+        };
+
+        var newQuestions = new ArrayList<>(questions);
+        newQuestions.sort(byDate);
 
         return newQuestions;
     }

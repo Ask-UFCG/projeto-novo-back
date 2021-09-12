@@ -30,7 +30,7 @@ public class QuestionSearchServiceImpl implements QuestionSearchService {
 
         if(!NEW.equals(filter)) {
             questions = updateQuestionsByFilter(questions, filter);
-        }else if(title == null || "".equals(title) ){
+        }else {
             Collections.reverse(questions);
         }
         return questions;
